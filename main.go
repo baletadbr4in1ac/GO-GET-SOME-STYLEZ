@@ -19,7 +19,7 @@ const (
 func main() {
 	fmt.Println(blue + "\nStarting GO-GET-SOME-STYLEZ..." + reset)
 
-	backupZshrc()
+	//backupZshrc()
 
 	switch detectOS() {
 	case "fedora":
@@ -152,20 +152,20 @@ func setDefaultShell() {
 	fmt.Println(green + "\nDone." + reset)
 }
 
-// backupZshrc backs up the existing .zshrc file.
-func backupZshrc() {
-	home, _ := os.UserHomeDir()
-	zshrc := home + "/.zshrc"
-	backup := home + "/.zshrc_original_bkp"
-	if exists(zshrc) {
-		err := os.Rename(zshrc, backup)
-		if err != nil {
-			fmt.Println(red+"Failed to backup .zshrc:", err, reset)
-			return
-		}
-		fmt.Printf(blue+"\nBacked up .zshrc to: %s\n"+reset, backup)
-	}
-}
+//// backupZshrc backs up the existing .zshrc file.
+//func backupZshrc() {
+//	home, _ := os.UserHomeDir()
+//	zshrc := home + "/.zshrc"
+//	backup := home + "/.zshrc_original_bkp"
+//	if exists(zshrc) {
+//		err := os.Rename(zshrc, backup)
+//		if err != nil {
+//			fmt.Println(red+"Failed to backup .zshrc:", err, reset)
+//			return
+//		}
+//		fmt.Printf(blue+"\nBacked up .zshrc to: %s\n"+reset, backup)
+//	}
+//}
 
 func installOhMyPosh() {
 	fmt.Println(yellow + "Installing Oh My Posh for Windows..." + reset)
