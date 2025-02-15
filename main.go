@@ -94,7 +94,8 @@ func installPackage(manager, pkg string) {
 
 func installOhMyZsh() {
 	fmt.Println(yellow + "Installing Oh My Zsh..." + reset)
-	cmd := exec.Command("/bin/sh", "-c", "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)")
+	cmd := exec.Command("/bin/sh", "-c",
+		"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
@@ -118,7 +119,8 @@ func installZshPlugins() {
 			fmt.Printf(blue+"Plugin %s already exists, skipping...\n"+reset, plugin)
 			continue
 		}
-		cmd := exec.Command("git", "clone", fmt.Sprintf("https://github.com/zsh-users/%s.git", plugin), pluginPath)
+		cmd := exec.Command("git", "clone",
+			fmt.Sprintf("https://github.com/zsh-users/%s.git", plugin), pluginPath)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		err := cmd.Run()
@@ -193,7 +195,8 @@ func openNewShell() {
 func sourceZshrc() {
 	fmt.Println(yellow + "Sourcing ~/.zshrc..." + reset)
 	home, _ := os.UserHomeDir()
-	cmd := exec.Command("zsh", "-c", fmt.Sprintf("source %s/.zshrc", home))
+	cmd := exec.Command("zsh", "-c",
+		fmt.Sprintf("source %s/.zshrc", home))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
