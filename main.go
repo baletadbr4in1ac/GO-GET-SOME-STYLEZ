@@ -19,10 +19,8 @@ const (
 func main() {
 	fmt.Println(blue + "\nStarting GO-GET-SOME-STYLEZ..." + reset)
 
-	// Backup .zshrc if it exists
 	backupZshrc()
 
-	// Install Zsh based on the OS
 	switch detectOS() {
 	case "fedora":
 		installPackage("dnf", "zsh")
@@ -42,25 +40,20 @@ func main() {
 		return
 	}
 
-	// Install Oh My Zsh and plugins
 	installOhMyZsh()
 	installZshPlugins()
 
-	// Set Zsh as the default shell if requested
 	if askDefaultShell() {
 		setDefaultShell()
 	}
 
-	// Source the new .zshrc file
 	sourceZshrc()
 
-	// Open a new shell
 	openNewShell()
 
 	fmt.Println(green + "\nNOW YOU GOT STYLEZ 😉" + reset)
 }
 
-// detectOS detects the operating system.
 func detectOS() string {
 	switch runtime.GOOS {
 	case "linux":
@@ -83,13 +76,11 @@ func detectOS() string {
 	return "unknown"
 }
 
-// exists checks if a file or directory exists.
 func exists(path string) bool {
 	_, err := os.Stat(path)
 	return err == nil
 }
 
-// installPackage installs a package using the specified package manager.
 func installPackage(manager, pkg string) {
 	fmt.Printf(yellow+"Installing %s using %s...\n"+reset, pkg, manager)
 	cmd := exec.Command("sudo", manager, "install", "-y", pkg)
@@ -103,7 +94,6 @@ func installPackage(manager, pkg string) {
 	fmt.Println(green + "Done." + reset)
 }
 
-// installOhMyZsh installs Oh My Zsh.
 func installOhMyZsh() {
 	fmt.Println(yellow + "Installing Oh My Zsh..." + reset)
 	cmd := exec.Command("/bin/sh", "-c", "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)")
@@ -117,12 +107,10 @@ func installOhMyZsh() {
 	fmt.Println(green + "Done." + reset)
 }
 
-// installZshPlugins installs Oh My Zsh plugins.
 func installZshPlugins() {
 	plugins := []string{"zsh-autosuggestions", "zsh-syntax-highlighting"}
 	fmt.Printf(yellow+"Installing Oh My Zsh plugins: %s\n"+reset, plugins)
 
-	// Resolve the custom plugins directory
 	home, _ := os.UserHomeDir()
 	customPluginsDir := home + "/.oh-my-zsh/custom/plugins"
 
@@ -144,7 +132,6 @@ func installZshPlugins() {
 	fmt.Println(green + "Done." + reset)
 }
 
-// askDefaultShell asks the user if they want to set Zsh as the default shell.
 func askDefaultShell() bool {
 	fmt.Print(blue + "Set Zsh as default shell? (Y/N): " + reset)
 	reader := bufio.NewReader(os.Stdin)
@@ -152,7 +139,6 @@ func askDefaultShell() bool {
 	return input == "Y\n" || input == "y\n"
 }
 
-// setDefaultShell sets Zsh as the default shell.
 func setDefaultShell() {
 	fmt.Println(yellow + "Setting Zsh as default shell..." + reset)
 	cmd := exec.Command("chsh", "-s", "/bin/zsh")
@@ -181,7 +167,6 @@ func backupZshrc() {
 	}
 }
 
-// installOhMyPosh installs Oh My Posh for Windows.
 func installOhMyPosh() {
 	fmt.Println(yellow + "Installing Oh My Posh for Windows..." + reset)
 	cmd := exec.Command("winget", "install", "JanDeDobbeleer.OhMyPosh")
@@ -196,7 +181,6 @@ func installOhMyPosh() {
 	createWindowsHelpFile()
 }
 
-// createWindowsHelpFile creates a help file for Windows users.
 func createWindowsHelpFile() {
 	desktop, _ := os.UserHomeDir()
 	helpFile := desktop + "\\Desktop\\oh-my-posh-setup.txt"
@@ -211,7 +195,6 @@ func createWindowsHelpFile() {
 	fmt.Printf(blue+"\nHelp file created at: %s\n"+reset, helpFile)
 }
 
-// openNewShell opens a new Zsh shell.
 func openNewShell() {
 	fmt.Println(yellow + "Opening a new shell for configuration..." + reset)
 	cmd := exec.Command("zsh")
@@ -224,7 +207,6 @@ func openNewShell() {
 	}
 }
 
-// sourceZshrc sources the .zshrc file.
 func sourceZshrc() {
 	fmt.Println(yellow + "Sourcing ~/.zshrc..." + reset)
 	home, _ := os.UserHomeDir()
