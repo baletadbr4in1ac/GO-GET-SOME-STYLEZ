@@ -60,6 +60,7 @@ func main() {
 	fmt.Println(green + "\nNOW YOU GOT STYLEZ 😉" + reset)
 }
 
+// detectOS detects the operating system.
 func detectOS() string {
 	switch runtime.GOOS {
 	case "linux":
@@ -82,11 +83,13 @@ func detectOS() string {
 	return "unknown"
 }
 
+// exists checks if a file or directory exists.
 func exists(path string) bool {
 	_, err := os.Stat(path)
 	return err == nil
 }
 
+// installPackage installs a package using the specified package manager.
 func installPackage(manager, pkg string) {
 	fmt.Printf(yellow+"Installing %s using %s...\n"+reset, pkg, manager)
 	cmd := exec.Command("sudo", manager, "install", "-y", pkg)
@@ -100,9 +103,10 @@ func installPackage(manager, pkg string) {
 	fmt.Println(green + "Done." + reset)
 }
 
+// installOhMyZsh installs Oh My Zsh.
 func installOhMyZsh() {
 	fmt.Println(yellow + "Installing Oh My Zsh..." + reset)
-	cmd := exec.Command("sh", "-c", "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)")
+	cmd := exec.Command("/bin/sh", "-c", "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
@@ -113,12 +117,18 @@ func installOhMyZsh() {
 	fmt.Println(green + "Done." + reset)
 }
 
+// installZshPlugins installs Oh My Zsh plugins.
 func installZshPlugins() {
 	plugins := []string{"zsh-autosuggestions", "zsh-syntax-highlighting"}
 	fmt.Printf(yellow+"Installing Oh My Zsh plugins: %s\n"+reset, plugins)
 	for _, plugin := range plugins {
-		cmd := exec.Command("git", "clone", fmt.Sprintf("https://github.com/zsh-users/%s.git", plugin),
-			fmt.Sprintf("$ZSH_CUSTOM/plugins/%s", plugin))
+		home, _ := os.UserHomeDir()
+		pluginPath := fmt.Sprintf("%s/.oh-my-zsh/custom/plugins/%s", home, plugin)
+		if exists(pluginPath) {
+			fmt.Printf(blue+"Plugin %s already exists, skipping...\n"+reset, plugin)
+			continue
+		}
+		cmd := exec.Command("git", "clone", fmt.Sprintf("https://github.com/zsh-users/%s.git", plugin), pluginPath)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		err := cmd.Run()
@@ -130,6 +140,7 @@ func installZshPlugins() {
 	fmt.Println(green + "Done." + reset)
 }
 
+// askDefaultShell asks the user if they want to set Zsh as the default shell.
 func askDefaultShell() bool {
 	fmt.Print(blue + "Set Zsh as default shell? (Y/N): " + reset)
 	reader := bufio.NewReader(os.Stdin)
@@ -137,6 +148,7 @@ func askDefaultShell() bool {
 	return input == "Y\n" || input == "y\n"
 }
 
+// setDefaultShell sets Zsh as the default shell.
 func setDefaultShell() {
 	fmt.Println(yellow + "Setting Zsh as default shell..." + reset)
 	cmd := exec.Command("chsh", "-s", "/bin/zsh")
@@ -150,6 +162,7 @@ func setDefaultShell() {
 	fmt.Println(green + "\nDone." + reset)
 }
 
+// backupZshrc backs up the existing .zshrc file.
 func backupZshrc() {
 	home, _ := os.UserHomeDir()
 	zshrc := home + "/.zshrc"
@@ -164,6 +177,7 @@ func backupZshrc() {
 	}
 }
 
+// installOhMyPosh installs Oh My Posh for Windows.
 func installOhMyPosh() {
 	fmt.Println(yellow + "Installing Oh My Posh for Windows..." + reset)
 	cmd := exec.Command("winget", "install", "JanDeDobbeleer.OhMyPosh")
@@ -178,6 +192,7 @@ func installOhMyPosh() {
 	createWindowsHelpFile()
 }
 
+// createWindowsHelpFile creates a help file for Windows users.
 func createWindowsHelpFile() {
 	desktop, _ := os.UserHomeDir()
 	helpFile := desktop + "\\Desktop\\oh-my-posh-setup.txt"
@@ -192,6 +207,7 @@ func createWindowsHelpFile() {
 	fmt.Printf(blue+"\nHelp file created at: %s\n"+reset, helpFile)
 }
 
+// openNewShell opens a new Zsh shell.
 func openNewShell() {
 	fmt.Println(yellow + "Opening a new shell for configuration..." + reset)
 	cmd := exec.Command("zsh")
@@ -204,9 +220,11 @@ func openNewShell() {
 	}
 }
 
+// sourceZshrc sources the .zshrc file.
 func sourceZshrc() {
 	fmt.Println(yellow + "Sourcing ~/.zshrc..." + reset)
-	cmd := exec.Command("zsh", "-c", "source ~/.zshrc")
+	home, _ := os.UserHomeDir()
+	cmd := exec.Command("zsh", "-c", fmt.Sprintf("source %s/.zshrc", home))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
