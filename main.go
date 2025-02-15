@@ -19,6 +19,8 @@ const (
 func main() {
 	fmt.Println(blue + "\nStarting GO-GET-SOME-STYLEZ..." + reset)
 
+	//backupZshrc()
+
 	switch detectOS() {
 	case "fedora":
 		installPackage("dnf", "zsh")
@@ -94,8 +96,7 @@ func installPackage(manager, pkg string) {
 
 func installOhMyZsh() {
 	fmt.Println(yellow + "Installing Oh My Zsh..." + reset)
-	cmd := exec.Command("/bin/sh", "-c",
-		"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)")
+	cmd := exec.Command("/bin/sh", "-c", "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
@@ -119,8 +120,7 @@ func installZshPlugins() {
 			fmt.Printf(blue+"Plugin %s already exists, skipping...\n"+reset, plugin)
 			continue
 		}
-		cmd := exec.Command("git", "clone",
-			fmt.Sprintf("https://github.com/zsh-users/%s.git", plugin), pluginPath)
+		cmd := exec.Command("git", "clone", fmt.Sprintf("https://github.com/zsh-users/%s.git", plugin), pluginPath)
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		err := cmd.Run()
@@ -151,6 +151,21 @@ func setDefaultShell() {
 	}
 	fmt.Println(green + "\nDone." + reset)
 }
+
+//// backupZshrc backs up the existing .zshrc file.
+//func backupZshrc() {
+//	home, _ := os.UserHomeDir()
+//	zshrc := home + "/.zshrc"
+//	backup := home + "/.zshrc_original_bkp"
+//	if exists(zshrc) {
+//		err := os.Rename(zshrc, backup)
+//		if err != nil {
+//			fmt.Println(red+"Failed to backup .zshrc:", err, reset)
+//			return
+//		}
+//		fmt.Printf(blue+"\nBacked up .zshrc to: %s\n"+reset, backup)
+//	}
+//}
 
 func installOhMyPosh() {
 	fmt.Println(yellow + "Installing Oh My Posh for Windows..." + reset)
@@ -195,8 +210,7 @@ func openNewShell() {
 func sourceZshrc() {
 	fmt.Println(yellow + "Sourcing ~/.zshrc..." + reset)
 	home, _ := os.UserHomeDir()
-	cmd := exec.Command("zsh", "-c",
-		fmt.Sprintf("source %s/.zshrc", home))
+	cmd := exec.Command("zsh", "-c", fmt.Sprintf("source %s/.zshrc", home))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
