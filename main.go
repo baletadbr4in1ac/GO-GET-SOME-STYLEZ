@@ -18,7 +18,11 @@ const (
 
 func main() {
 	fmt.Println(blue + "\nStarting GO-GET-SOME-STYLEZ..." + reset)
+
+	// Backup .zshrc if it exists
 	backupZshrc()
+
+	// Install Zsh based on the OS
 	switch detectOS() {
 	case "fedora":
 		installPackage("dnf", "zsh")
@@ -38,14 +42,21 @@ func main() {
 		return
 	}
 
+	// Install Oh My Zsh and plugins
 	installOhMyZsh()
 	installZshPlugins()
 
+	// Set Zsh as the default shell if requested
 	if askDefaultShell() {
 		setDefaultShell()
 	}
 
+	// Source the new .zshrc file
+	sourceZshrc()
+
+	// Open a new shell
 	openNewShell()
+
 	fmt.Println(green + "\nNOW YOU GOT STYLEZ 😉" + reset)
 }
 
@@ -80,6 +91,7 @@ func installPackage(manager, pkg string) {
 	fmt.Printf(yellow+"Installing %s using %s...\n"+reset, pkg, manager)
 	err := exec.Command("sudo", manager, "install", "-y", pkg).Run()
 	if err != nil {
+		fmt.Println(red + "Failed to install " + pkg + reset)
 		return
 	}
 	fmt.Println(green + "Done." + reset)
@@ -90,6 +102,7 @@ func installOhMyZsh() {
 	err := exec.Command("sh", "-c",
 		"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)").Run()
 	if err != nil {
+		fmt.Println(red + "Failed to install Oh My Zsh" + reset)
 		return
 	}
 	fmt.Println(green + "Done." + reset)
@@ -102,6 +115,7 @@ func installZshPlugins() {
 		err := exec.Command("git", "clone", fmt.Sprintf("https://github.com/zsh-users/%s.git", plugin),
 			fmt.Sprintf("$ZSH_CUSTOM/plugins/%s", plugin)).Run()
 		if err != nil {
+			fmt.Println(red + "Failed to install plugin: " + plugin + reset)
 			return
 		}
 	}
@@ -119,6 +133,7 @@ func setDefaultShell() {
 	fmt.Println(yellow + "Setting Zsh as default shell..." + reset)
 	err := exec.Command("chsh", "-s", "/bin/zsh").Run()
 	if err != nil {
+		fmt.Println(red + "Failed to set Zsh as default shell" + reset)
 		return
 	}
 	fmt.Println(green + "\nDone." + reset)
@@ -131,6 +146,7 @@ func backupZshrc() {
 	if exists(zshrc) {
 		err := os.Rename(zshrc, backup)
 		if err != nil {
+			fmt.Println(red + "Failed to backup .zshrc" + reset)
 			return
 		}
 		fmt.Printf(blue+"\nBacked up .zshrc to: %s\n"+reset, backup)
@@ -141,6 +157,7 @@ func installOhMyPosh() {
 	fmt.Println(yellow + "Installing Oh My Posh for Windows..." + reset)
 	err := exec.Command("winget", "install", "JanDeDobbeleer.OhMyPosh").Run()
 	if err != nil {
+		fmt.Println(red + "Failed to install Oh My Posh" + reset)
 		return
 	}
 	fmt.Println(green + "\nDone." + reset)
@@ -155,6 +172,7 @@ func createWindowsHelpFile() {
 		"3. Set your terminal to use a Nerd Font\n"
 	err := os.WriteFile(helpFile, []byte(content), 0644)
 	if err != nil {
+		fmt.Println(red + "Failed to create help file" + reset)
 		return
 	}
 	fmt.Printf(blue+"\nHelp file created at: %s\n"+reset, helpFile)
@@ -164,6 +182,17 @@ func openNewShell() {
 	fmt.Println(yellow + "Opening a new shell for configuration..." + reset)
 	err := exec.Command("zsh").Run()
 	if err != nil {
+		fmt.Println(red + "Failed to open new shell" + reset)
 		return
 	}
+}
+
+func sourceZshrc() {
+	fmt.Println(yellow + "Sourcing ~/.zshrc..." + reset)
+	err := exec.Command("zsh", "-c", "source ~/.zshrc").Run()
+	if err != nil {
+		fmt.Println(red + "Failed to source ~/.zshrc" + reset)
+		return
+	}
+	fmt.Println(green + "Done." + reset)
 }
