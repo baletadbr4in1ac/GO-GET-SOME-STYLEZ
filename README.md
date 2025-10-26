@@ -23,16 +23,20 @@ It also provides helpful guidance for users to customize their shell experience.
 ### Steps
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/go-get-some-stylez.git
-   cd go-get-some-stylez
+   git clone https://github.com/baletadbr4in1ac/GO-GET-SOME-STYLEZ.git
+   cd GO-GET-SOME-STYLEZ
    ```
 2. Build the project:
    ```sh
-   go build -o go-get-stylez
+   Windows hosts:
+    go build -o GO-GET-SOME-STYLEZ.exe .\cmd\app\
+   
+   Linux hosts:
+    go build -o GO-GET-SOME-STYLEZ ./cmd/app/
    ```
 3. Run the script:
    ```sh
-   ./go-get-stylez
+   ./GO-GET-SOME-STYLEZ
    ```
 
 ## OS Detection & Package Managers
@@ -44,7 +48,6 @@ It also provides helpful guidance for users to customize their shell experience.
 | Arch     | `pacman`              |
 | Manjaro  | `pacman`              |
 | openSUSE | `zypper`              |
-| macOS    | `brew`                |
 | Windows  | `winget` (Oh My Posh) |
 
 ## Behavior
