@@ -3,7 +3,6 @@ package cli
 import (
 	"GO-GET-SOME-STYLEZ/pkg"
 	"fmt"
-	"log/slog"
 	"os"
 	"os/exec"
 )
@@ -71,8 +70,8 @@ func InstallZshPlugins() {
 			return
 		}
 	}
-	//fmt.Println(pkg.Green + "Done." + pkg.Reset)
-	slog.Info(pkg.Green + "Done." + pkg.Reset)
+	fmt.Println(pkg.Green + "Done." + pkg.Reset)
+	//slog.Info(pkg.Green + "Done." + pkg.Reset)
 }
 
 func SourceZshrc() {
