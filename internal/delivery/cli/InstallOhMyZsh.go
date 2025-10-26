@@ -32,7 +32,7 @@ func InstallOhMyZsh() {
 	BackupZshrc()
 	fmt.Println(pkg.Yellow + "Installing Oh My Zsh..." + pkg.Reset)
 	//slog.Info(pkg.Yellow + "Installing Oh My Zsh..." + pkg.Reset)
-	cmd := exec.Command("/bin/sh", "-c",
+	cmd := exec.Command("bash", "-c",
 		"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
