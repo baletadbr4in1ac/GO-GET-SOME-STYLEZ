@@ -2,6 +2,7 @@ package pkg
 
 import (
 	"os"
+	"os/exec"
 	"runtime"
 )
 
@@ -34,5 +35,10 @@ func OSDetectionSimple() string {
 
 func Exists(path string) bool {
 	_, err := os.Stat(path)
+	return err == nil
+}
+
+func IsItInstalled(toolCmd string) bool {
+	_, err := exec.LookPath(toolCmd)
 	return err == nil
 }
