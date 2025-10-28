@@ -6,4 +6,5 @@ const (
 	Yellow = "\033[33m"
 	Blue   = "\033[34m"
 	Reset  = "\033[0m"
+	Purple = "\033[35m"
 )
