@@ -9,7 +9,6 @@ import (
 func CreateLinuxHelpFile() {
 	home, _ := os.UserHomeDir()
 	fmt.Print(pkg.Blue + "Creating help file at: " + home + "/oh-my-zsh-setup.txt\n" + pkg.Reset)
-	//slog.Info(pkg.Blue + "Creating help file at: " + home + "/oh-my-zsh-setup.txt\n" + pkg.Reset)
 	helpFile := home + "/oh-my-zsh-setup.txt"
 	content := "1. For the plugins to work correctly.\nMake sure you include the following plugin configuration in your " +
 		"~/.zshrc when the installation process is finished\n plugins=(git zsh-autosuggestions zsh-syntax-highlighting)\n\n" +
@@ -81,5 +80,4 @@ func CreateWindowsHelpFile() {
 		return
 	}
 	fmt.Printf(pkg.Blue+"\nHelp file created at: %s\n"+pkg.Reset, helpFile)
-	//slog.Info(pkg.Blue+"\nHelp file created at: %s\n"+pkg.Reset, helpFile)
 }

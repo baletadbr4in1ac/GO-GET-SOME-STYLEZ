@@ -10,7 +10,6 @@ import (
 
 func GetDefaultShell() bool {
 	fmt.Print(pkg.Blue + "Set Zsh as default shell? (Y/N): " + pkg.Reset)
-	//slog.Info(pkg.Blue + "Set Zsh as default shell? (Y/N): " + pkg.Reset)
 	reader := bufio.NewReader(os.Stdin)
 	input, _ := reader.ReadString('\n')
 	return input == "Y\n" || input == "y\n"
@@ -18,7 +17,6 @@ func GetDefaultShell() bool {
 
 func SetDefaultShell() {
 	fmt.Println(pkg.Yellow + "Setting Zsh as default shell..." + pkg.Reset)
-	//slog.Info(pkg.Yellow + "Setting Zsh as default shell..." + pkg.Reset)
 	cmd := exec.Command("chsh", "-s", "/bin/zsh")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -28,5 +26,4 @@ func SetDefaultShell() {
 		return
 	}
 	fmt.Println(pkg.Green + "\nDone." + pkg.Reset)
-	//slog.Info(pkg.Green + "\nDone." + pkg.Reset)
 }
